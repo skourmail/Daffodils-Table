@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Daffodils - Shop Register</title>
+  <style>
+    :root {
+      --primary: #9d174d;
+      --primary-light: #fce7f3;
+      --primary-dark: #831843;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #15803d;
+      --success-bg: #dcfce7;
+      --warning: #b45309;
+      --warning-bg: #fef3c7;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding-bottom: 30px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 20px 16px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+
+    header p {
+      font-size: 0.8rem;
+      opacity: 0.85;
+      margin-top: 2px;
+    }
+
+    /* Tabs */
+    .nav-tabs {
+      display: flex;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 68px;
+      z-index: 40;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 14px 8px;
+      border: none;
+      background: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background-color: var(--primary-light);
+    }
+
+    .badge {
+      background: var(--primary);
+      color: white;
+      font-size: 0.75rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 16px auto;
+      padding: 0 16px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Form Card */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="date"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #fafafa;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #fff;
+    }
+
+    input:disabled {
+      background: #f1f5f9;
+      color: var(--text-muted);
+      cursor: not-allowed;
+    }
+
+    /* Toggle Pills */
+    .pill-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .pill-option {
+      flex: 1;
+      text-align: center;
+    }
+
+    .pill-option input[type="radio"] {
+      display: none;
+    }
+
+    .pill-label {
+      display: block;
+      padding: 10px;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pill-option input[type="radio"]:checked + .pill-label.paid,
+    .pill-option input[type="radio"]:checked + .pill-label.received {
+      background: var(--success-bg);
+      color: var(--success);
+      border-color: var(--success);
+    }
+
+    .pill-option input[type="radio"]:checked + .pill-label.unpaid,
+    .pill-option input[type="radio"]:checked + .pill-label.pending {
+      background: var(--warning-bg);
+      color: var(--warning);
+      border-color: var(--warning);
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(157, 23, 77, 0.3);
+      transition: opacity 0.2s;
+      margin-top: 8px;
+    }
+
+    .submit-btn:active {
+      opacity: 0.9;
+    }
+
+    /* Filter & Search Bar */
+    .toolbar {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    .filter-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-secondary {
+      padding: 8px 12px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Entries Cards / Table */
+    .entries-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .entry-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .entry-sno {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 0.95rem;
+    }
+
+    .entry-date {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .entry-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+
+    .entry-label {
+      color: var(--text-muted);
+    }
+
+    .entry-val {
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .entry-statuses {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    /* Tappable Status Chips */
+    .status-chip {
+      flex: 1;
+      text-align: center;
+      padding: 6px 4px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.1s;
+    }
+
+    .status-chip:active {
+      transform: scale(0.97);
+    }
+
+    .status-paid {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .status-unpaid {
+      background: var(--warning-bg);
+      color: var(--warning);
+    }
+
+    .status-received {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .status-pending {
+      background: #f1f5f9;
+      color: var(--text-muted);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 16px;
+      color: var(--text-muted);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f172a;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 100;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Daffodils</h1>
+    <p>Procurement & Sales Register</p>
+  </header>
+
+  <nav class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('form')">New Entry</button>
+    <button class="tab-btn" onclick="switchTab('table')">
+      Entries <span class="badge" id="countBadge">0</span>
+    </button>
+  </nav>
+
+  <div class="container">
+    <!-- TAB 1: FORM -->
+    <div id="tab-form" class="tab-content active">
+      <div class="card">
+        <form id="entryForm" onsubmit="handleFormSubmit(event)">
+          <div class="form-group">
+            <label for="sno">Serial Number (Auto)</label>
+            <input type="text" id="sno" disabled />
+          </div>
+
+          <div class="form-group">
+            <label for="entryDate">Date</label>
+            <input type="date" id="entryDate" required />
+          </div>
+
+          <div class="form-group">
+            <label for="procurementName">Procurement / Item Name</label>
+            <input type="text" id="procurementName" placeholder="e.g. Kanchipuram Silk Saree" required />
+          </div>
+
+          <div class="form-group">
+            <label for="customerName">Customer Name</label>
+            <input type="text" id="customerName" placeholder="e.g. Priya Sharma" required />
+          </div>
+
+          <div class="form-group">
+            <label>Payment Status</label>
+            <div class="pill-group">
+              <label class="pill-option">
+                <input type="radio" name="paidStatus" value="Paid" checked />
+                <span class="pill-label paid">✓ Paid</span>
+              </label>
+              <label class="pill-option">
+                <input type="radio" name="paidStatus" value="Unpaid" />
+                <span class="pill-label unpaid">✕ Unpaid</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Delivery / Receipt Status</label>
+            <div class="pill-group">
+              <label class="pill-option">
+                <input type="radio" name="receivedStatus" value="Received" checked />
+                <span class="pill-label received">✓ Received</span>
+              </label>
+              <label class="pill-option">
+                <input type="radio" name="receivedStatus" value="Pending" />
+                <span class="pill-label pending">⏳ Pending</span>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">Save Entry</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB 2: ENTRIES TABLE -->
+    <div id="tab-table" class="tab-content">
+      <div class="toolbar">
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Search by customer, item, or S.No..." 
+          oninput="renderEntries()"
+        />
+        <div class="filter-actions">
+          <span style="font-size: 0.85rem; color: var(--text-muted);" id="filterCount">Showing 0</span>
+          <button class="btn-secondary" onclick="exportToCSV()">📥 Export CSV</button>
+        </div>
+      </div>
+
+      <div class="entries-container" id="entriesList"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Entry saved successfully!</div>
+
+  <script>
+    const STORAGE_KEY = 'daffodils_register_data';
+
+    function getEntries() {
+      const data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    }
+
+    function saveEntries(entries) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+      updateBadge();
+    }
+
+    function setNextSNo() {
+      const entries = getEntries();
+      const nextNo = entries.length > 0 ? entries[entries.length - 1].sno + 1 : 1;
+      document.getElementById('sno').value = `#${nextNo}`;
+    }
+
+    function updateBadge() {
+      const entries = getEntries();
+      document.getElementById('countBadge').innerText = entries.length;
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+
+      if (tabId === 'form') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('tab-form').classList.add('active');
+        setNextSNo();
+      } else {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('tab-table').classList.add('active');
+        renderEntries();
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const entries = getEntries();
+      const nextNo = entries.length > 0 ? entries[entries.length - 1].sno + 1 : 1;
+
+      const newEntry = {
+        id: Date.now(),
+        sno: nextNo,
+        date: document.getElementById('entryDate').value,
+        procurement: document.getElementById('procurementName').value.trim(),
+        customer: document.getElementById('customerName').value.trim(),
+        paid: document.querySelector('input[name="paidStatus"]:checked').value === 'Paid',
+        received: document.querySelector('input[name="receivedStatus"]:checked').value === 'Received'
+      };
+
+      entries.push(newEntry);
+      saveEntries(entries);
+
+      document.getElementById('entryForm').reset();
+      document.getElementById('entryDate').valueAsDate = new Date();
+      setNextSNo();
+
+      showToast("✓ Entry recorded for Daffodils");
+      switchTab('table');
+    }
+
+    function toggleStatus(id, field) {
+      const entries = getEntries();
+      const index = entries.findIndex(item => item.id === id);
+      if (index !== -1) {
+        entries[index][field] = !entries[index][field];
+        saveEntries(entries);
+        renderEntries();
+      }
+    }
+
+    function renderEntries() {
+      const entries = getEntries();
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const listEl = document.getElementById('entriesList');
+
+      const filtered = entries.filter(item => 
+        item.customer.toLowerCase().includes(query) ||
+        item.procurement.toLowerCase().includes(query) ||
+        (`#${item.sno}`).includes(query) ||
+        item.date.includes(query)
+      );
+
+      document.getElementById('filterCount').innerText = `Showing ${filtered.length} of ${entries.length}`;
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = `
+          <div class="empty-state">
+            <p>No entries found.</p>
+            <p style="font-size: 0.8rem; margin-top: 4px;">Use the 'New Entry' tab to record transactions.</p>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = filtered.slice().reverse().map(item => `
+        <div class="entry-card">
+          <div class="entry-header">
+            <span class="entry-sno">#${item.sno}</span>
+            <span class="entry-date">${item.date}</span>
+          </div>
+          <div class="entry-row">
+            <span class="entry-label">Item / Saree:</span>
+            <span class="entry-val">${escapeHtml(item.procurement)}</span>
+          </div>
+          <div class="entry-row">
+            <span class="entry-label">Customer:</span>
+            <span class="entry-val">${escapeHtml(item.customer)}</span>
+          </div>
+          <div class="entry-statuses">
+            <div 
+              class="status-chip ${item.paid ? 'status-paid' : 'status-unpaid'}"
+              onclick="toggleStatus(${item.id}, 'paid')"
+              title="Click to toggle Paid/Unpaid"
+            >
+              ${item.paid ? '✓ Paid' : '✕ Unpaid'}
+            </div>
+            <div 
+              class="status-chip ${item.received ? 'status-received' : 'status-pending'}"
+              onclick="toggleStatus(${item.id}, 'received')"
+              title="Click to toggle Received/Pending"
+            >
+              ${item.received ? '✓ Received' : '⏳ Pending'}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function exportToCSV() {
+      const entries = getEntries();
+      if (!entries.length) {
+        alert("No entries to export yet.");
+        return;
+      }
+
+      const headers = ["Serial No", "Date", "Procurement Name", "Customer Name", "Paid Status", "Received Status"];
+      const rows = entries.map(e => [
+        e.sno,
+        `"${e.date}"`,
+        `"${e.procurement.replace(/"/g, '""')}"`,
+        `"${e.customer.replace(/"/g, '""')}"`,
+        e.paid ? "Paid" : "Unpaid",
+        e.received ? "Received" : "Pending"
+      ]);
+
+      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+      const link = document.createElement("a");
+      link.setAttribute("href", encodeURI(csvContent));
+      link.setAttribute("download", `daffodils_register_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    // Initialize
+    document.getElementById('entryDate').valueAsDate = new Date();
+    setNextSNo();
+    updateBadge();
+  </script>
+</body>
+</html>
